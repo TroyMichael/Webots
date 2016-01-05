@@ -1,4 +1,5 @@
 import Jama.Matrix;
+import com.cyberbotics.webots.controller.Camera;
 import com.cyberbotics.webots.controller.DifferentialWheels;
 import com.cyberbotics.webots.controller.DistanceSensor;
 
@@ -15,7 +16,6 @@ public class PushAllBallsToWallController extends DifferentialWheels {
     private static int BACKWARDS = -100;
     private static int MIN_SPEED = 0; // min. motor speed
     private static int MAX_SPEED = 1000; // max. motor speed
-    private static int LIGHT_THRESHOLD = 200; //min light value for full stop
     private static int CONSTANT = 400;
 
     //distance sensors
@@ -28,19 +28,12 @@ public class PushAllBallsToWallController extends DifferentialWheels {
     private static int S_REAR_RIGHT = 6; // Sensor right
     private static int S_REAR_LEFT = 7; // Sensor right
 
-    //light sensors
-    private static int L_LEFT = 0;
-    private static int L_MIDDLE_LEFT = 1;
-    private static int L_FRONT_LEFT = 2;
-    private static int L_FRONT_RIGHT = 3;
-    private static int L_MIDDLE_RIGHT = 4;
-    private static int L_RIGHT = 5;
-    private static int L_REAR_RIGHT = 6;
-    private static int L_REAR_LEFT = 7;
 
     private DistanceSensor[] _distanceSensors; // Array with all distance sensors
-    private Matrix _distanceSensorValueMatrix; //matrix for values of light sensors
-    private Matrix _controllerMatrix; //to set importance for specific sensors
+
+    private Boolean foundBall = false;
+    private Boolean foundWall = false;
+
 
     public PushAllBallsToWallController() {
         super();
@@ -67,40 +60,31 @@ public class PushAllBallsToWallController extends DifferentialWheels {
         // Main loop:
         // Perform simulation steps of 64 milliseconds
         // and leave the loop when the simulation is over
-        setPriorities();
         while (step(TIME_STEP) != -1) {
-            getValues();
-            calculateSpeed();
-        };
+            turnRight();
+        }
     }
 
-    private void calculateSpeed() {
-        Matrix speedMatrix = _controllerMatrix.times(_distanceSensorValueMatrix);
-        System.out.println(speedMatrix.get(0,0) + " " + speedMatrix.get(1,0));
-        setSpeed(speedMatrix.get(1, 0) + CONSTANT, speedMatrix.get(0, 0) + CONSTANT);
+
+
+    private void followRoute() {
+
     }
 
-    private void setPriorities() {
-        double [] [] controllerMatrixArray = {
-                //left, middle left, front left, right, middle right, front right
-                {0.2,0.1,0.15,0,0,0},
-                //left, middle left, front left, right, middle right, front right
-                {0,0,0,0.2,0.1,0.15},
+    private void pushBallToWall() {
 
-        };
-        _controllerMatrix = new Matrix(controllerMatrixArray);
     }
 
-    private void getValues() {
-        double [][] distanceSensorArray = {
-                {_distanceSensors[S_LEFT].getValue()},
-                {_distanceSensors[S_MIDDLE_LEFT].getValue()},
-                {_distanceSensors[S_FRONT_LEFT].getValue()},
-                {_distanceSensors[S_RIGHT].getValue()},
-                {_distanceSensors[S_MIDDLE_RIGHT].getValue()},
-                {_distanceSensors[S_FRONT_RIGHT].getValue()}
-        };
-        _distanceSensorValueMatrix = new Matrix(distanceSensorArray);
+    private void returnToPosition() {
+
+    }
+
+    private void turnRight() {
+        setSpeed(MAX_SPEED, -MAX_SPEED);
+    }
+
+    private void turnAround() {
+        setSpeed(MAX_SPEED, -MAX_SPEED);
     }
 
     // This is the main program of your controller.
