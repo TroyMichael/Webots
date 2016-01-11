@@ -6,7 +6,7 @@ public class BangBangFollowTheBallController extends DifferentialWheels {
     private static int TIME_STEP = 16;
     private static int MAX_SENSOR_VALUE = 200;
     private static int BACKWARDS = -100;
-    private static int MIN_SPEED = 0; // min. motor speed
+private static int MIN_SPEED = 0; // min. motor speed
     private static int MAX_SPEED = 1000; // max. motor speed
     private static int LIGHT_THRESHOLD = 200; //min light value for full stop
 

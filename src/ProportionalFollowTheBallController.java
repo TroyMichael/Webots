@@ -66,12 +66,11 @@ public class ProportionalFollowTheBallController extends DifferentialWheels {
         while (step(TIME_STEP) != -1) {
             getValues();
             calculateSpeed();
-        };
+        }
     }
 
     private void calculateSpeed() {
         Matrix speedMatrix = _controllerMatrix.times(_distanceSensorValueMatrix);
-        System.out.println(speedMatrix.get(0,0) + " " + speedMatrix.get(1,0));
         setSpeed(speedMatrix.get(1, 0) + CONSTANT, speedMatrix.get(0, 0) + CONSTANT);
     }
 
